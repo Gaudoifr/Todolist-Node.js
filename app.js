@@ -13,7 +13,7 @@ app.use(session({secret: 'todotopsecret'}))
 /* S'il n'y a pas de todolist dans la session,
 on en crée une vide sous forme d'array avant la suite */
 .use(function(req, res, next){
-    if (typeof(req.session.todolist) == 'undefined') {
+    if (typeof(req.session.todolist) === 'undefined') {
         req.session.todolist = [];
     }
     next();
@@ -26,7 +26,7 @@ on en crée une vide sous forme d'array avant la suite */
 
 /* On ajoute un élément à la todolist */
 .post('/todo/add/', urlencodedParser, function(req, res) {
-    if (req.body.newtodo != '') {
+    if (req.body.newtodo) {
         req.session.todolist.push(req.body.newtodo);
     }
     // console.log(req.session.todolist);
@@ -35,7 +35,7 @@ on en crée une vide sous forme d'array avant la suite */
 
 /* Supprime un élément de la todolist */
 .get('/todo/delete/:id', function(req, res) {
-    if (req.params.id != '') {
+    if (req.params.id) {
         req.session.todolist.splice(req.params.id, 1);
     }
     res.redirect('/todo');
